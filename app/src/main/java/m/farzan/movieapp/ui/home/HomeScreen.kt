@@ -1,8 +1,6 @@
 package m.farzan.movieapp.ui.home
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -28,13 +25,12 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import m.farzan.movieapp.MainActivity
+import coil.compose.rememberAsyncImagePainter
 import m.farzan.movieapp.Model.Movie
 import m.farzan.movieapp.Model.movies
 
 import m.farzan.movieapp.R
-import m.farzan.movieapp.ui.components.ShapeImage
+import m.farzan.movieapp.ui.components.ShimmerImage
 import m.farzan.movieapp.ui.components.StatusBar
 import m.farzan.movieapp.ui.movieNavigation.MovieScreens
 import m.farzan.movieapp.ui.theme.primaryAlpha
@@ -44,9 +40,6 @@ import m.farzan.movieapp.ui.theme.topBarColor
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(navController: NavController) {
-
-    val systemUiController = rememberSystemUiController()
-    //systemUiController.setSystemBarsColor(color = MaterialTheme.colors.topBarColor)
 
     Surface() {
         Column {
@@ -77,11 +70,7 @@ fun MainContent(movieList: List<Movie>, navController: NavController) {
             Spacer(modifier = Modifier.height(25.dp))
             MovieCard(movie = it) {
                 navController.navigate(
-                    route = MovieScreens.DetailsScreen.name + "/${
-                        movieList.indexOf(
-                            it
-                        )
-                    }"
+                    route = MovieScreens.DetailsScreen.name + "/${movieList.indexOf(it)}"
                 )
             }
         }
@@ -110,8 +99,7 @@ fun MovieCard(movie: Movie = movies[0], onCardClick: () -> Unit = {}) {
             val cover = createRef()
             val tittle = createRef()
             val imdb = createRef()
-
-            ShapeImage(
+            ShimmerImage(
                 modifier = Modifier
                     .constrainAs(cover) {
                         start.linkTo(parent.start)
@@ -123,7 +111,7 @@ fun MovieCard(movie: Movie = movies[0], onCardClick: () -> Unit = {}) {
                     .width(screenWidth * 33 / 100),
                 contentScale = ContentScale.Crop,
                 shape = RoundedCornerShape(corner = CornerSize(16.dp)),
-                painter = painterResource(id = movie.coverId),
+                painter = rememberAsyncImagePainter(movie.cover),
                 contentDescription = "${movie.name} cover"
             )
 
@@ -235,7 +223,7 @@ fun ImdbRow(modifier: Modifier, imdb: @Composable () -> Unit) {
     ) {
 
 
-        ShapeImage(
+        ShimmerImage(
             modifier = Modifier.size(35.dp, 25.dp),
             painter = painterResource(id = R.drawable.imdbpng),
             contentDescription = "imdb",

@@ -9,7 +9,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.runtime.Composable
@@ -17,10 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,9 +27,11 @@ import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import m.farzan.movieapp.Model.Movie
 import m.farzan.movieapp.Model.movies
+import m.farzan.movieapp.ui.components.ShimmerImage
 import m.farzan.movieapp.ui.home.GenreRow
 import m.farzan.movieapp.ui.home.ImdbRow
 import m.farzan.movieapp.ui.theme.*
@@ -70,8 +69,8 @@ fun DetailsContact(movie: Movie = movies[0] , onBackClick : () -> Unit = {}) {
         val details = createRef()
         val backBtn = createRef()
 
-        Image(
-            painter = painterResource(id = movie.coverId),
+        ShimmerImage(
+            painter = rememberAsyncImagePainter(movie.cover),
             contentDescription = "cover",
             contentScale = ContentScale.Crop,
             modifier = Modifier
